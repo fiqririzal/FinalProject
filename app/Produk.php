@@ -11,6 +11,12 @@ class Produk extends Model
     protected $fillable = [
         'id_toko', 'name', 'detail', 'price', 'image', 'stok', 'created_at', 'updated_at',
     ];
+    protected $appends = ['toko_name'];
+
+    public function getTokoNameAttribute()
+    {
+        return Toko::where('id', $this->id_toko)->value('name');
+    }
 
     public function gabahToToko()
     {
