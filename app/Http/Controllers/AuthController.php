@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $rules = [
             'email' => 'required|email',
-            'password' => 'required|min:8',
+            'password' => 'required',
         ];
         $message = [
             'email.required' => 'Mohon Isikan Email anda',
@@ -43,40 +43,65 @@ class AuthController extends Controller
 
         $data   = [
             'token'     => $token,
-            'user'      => Auth::user()->detail,
+            'user'      => Auth::user(),
         ];
         return apiResponse(200, 'success', 'Selamat anda berhasil Login', $data);
     }
     public function signup(Request $request ){
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            'photo_profile' => 'required',
-            'photo_id' => 'required',
+            // 'photo_profile' => 'required',
+            // 'photo_id' => 'required',
             'role' => 'required',
         ]);
         try{
-            DB::transaction(function ()use($request) {
-                $id = User::insertGetId([
-                    'name'=>request('name'),
-                    'email'=>$request->email,
-                    'password'=>Hash::make($request->password),
-                    'created_at'=>date('Y-m-d H-i-s')
-                ]);
-                UserDetail::insert([
-                    'id_user' => $id,
-                    'adddress' => $request->adddress,
-                    'phone' => $request->phone,
-                    'photo_profile' => $request->photo_profile,
-                    'photo_id' => $request->photo_id,
-                    'role' => $request->role,
-                    'created_at' => date('Y-m-d H-i-s')
-                ]);
-            });
-            return apiResponse(201, 'success', 'user berhasil daftar');
+            if($request->role == '2') {
+                DB::transaction(function ()use($request ) {
+                   $user = User::create([
+                            'name'=>$request->name,
+                            'email'=>$request->email,
+                            'password'=>Hash::make($request->password),
+                            'created_at'=>date('Y-m-d H-i-s')
+                    ]);
+                    // $user = User::create($data);
+                    $user->syncRoles('Pabrik');
+                    UserDetail::create([
+                        'user_id' => $user->id,
+                        'address' => $request->address,
+                        'phone' => $request->phone,
+                        // 'photo_profile' => $request->photo_profile,
+                        // 'photo_id' => $request->photo_id,
+                        'created_at' => date('Y-m-d H-i-s')
+                    ]);
+                });
+                // dd('knol');
+                return apiResponse(201, 'success', 'user berhasil daftar');
+            }else {
+                DB::transaction(function ()use($request ) {
+                    $user = User::create([
+                             'name'=>$request->name,
+                             'email'=>$request->email,
+                             'password'=>Hash::make($request->password),
+                             'created_at'=>date('Y-m-d H-i-s')
+                     ]);
+                     // $user = User::create($data);
+                     $user->syncRoles('Toko');
+                     UserDetail::create([
+                         'user_id' => $user->id,
+                         'address' => $request->address,
+                         'phone' => $request->phone,
+                         // 'photo_profile' => $request->photo_profile,
+                         // 'photo_id' => $request->photo_id,
+                         'created_at' => date('Y-m-d H-i-s')
+                     ]);
+                 });
+            }
+             return apiResponse(201, 'success', 'user berhasil daftar');
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
         }

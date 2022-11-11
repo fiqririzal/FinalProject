@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    // protected $table = "user";
+
     use Notifiable, HasApiTokens, HasRoles;
 
     /**
@@ -39,6 +41,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function user_detail() {
-        return $this->belongsTo(UserDetail::class, 'id');
+        return $this->hasOne(UserDetail::class);
     }
 }
