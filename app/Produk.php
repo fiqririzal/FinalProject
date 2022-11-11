@@ -18,7 +18,7 @@ class Produk extends Model
         return Toko::where('id', $this->id_toko)->value('name');
     }
 
-    public function gabahToToko()
+    public function produkToToko()
     {
         return $this->belongsTo(Toko::class, 'id_toko');
     }
