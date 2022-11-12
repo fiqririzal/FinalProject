@@ -20,7 +20,7 @@ class CreatePabrikTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('phone');
-            $table->text('image');
+            $table->text('image', 25,5);
             $table->string('status');
 
             $table->foreign('id_user')

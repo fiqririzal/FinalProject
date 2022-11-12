@@ -19,7 +19,7 @@ class CreateGabahTable extends Migration
             $table->unsignedBigInteger('id_pabrik');
             $table->string('name');
             $table->string('detail');
-            $table->decimal('price');
+            $table->decimal('price', 25,5);
             $table->text('image');
 
             $table->foreign('id_pabrik')

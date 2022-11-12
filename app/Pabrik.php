@@ -15,7 +15,7 @@ class Pabrik extends Model
 
     public function getUserNameAttribute()
     {
-        return Toko::where('id', $this->id_user)->value('name');
+        return User::where('id', $this->id_user)->value('name');
     }
 
     public function pabrikToUser()

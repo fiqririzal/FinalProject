@@ -19,7 +19,7 @@ class CreateProdukTable extends Migration
             $table->unsignedBigInteger('id_toko');
             $table->string('name');
             $table->string('detail');
-            $table->decimal('price');
+            $table->decimal('price', 25,5);
             $table->string('stok');
             $table->text('image');
 

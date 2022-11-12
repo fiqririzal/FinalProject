@@ -11,12 +11,19 @@ class ProdukController extends Controller
 {
     public function index()
     {
-        return apiResponse(200, 'success', 'Produk semua data', Produk::get());
+        $data = Produk::get();
+        foreach($data as $datas)
+        {
+            $datas->image = asset('/images/produk/' .$datas->image);
+        }
+        return apiResponse(200, 'success', 'Produk semua data', $data);
     }
 
     public function show($id)
     {
-        return apiResponse(200, 'success', 'Produk show data', Produk::where('id', $id)->get());
+        $data = Produk::where('id', $id)->first();
+        $data->image = asset('/images/produk/' .$data->image);
+        return apiResponse(200, 'success', 'Produk show data', $data);
     }
 
     public function store(Request $request){
@@ -47,7 +54,7 @@ class ProdukController extends Controller
             $destination = base_path('public/images/produk');
             $request->file('image')->move($destination,$image);
 
-            $gabah = Produk::create([
+            $produk = Produk::create([
                 'id_toko' => $request->id_toko,
                 'name'    => $request->name,
                 'detail'  => $request->detail,
@@ -56,7 +63,9 @@ class ProdukController extends Controller
                 'stok'    => $request->stok,
             ]);
 
-            return apiResponse(201, 'success', 'Produk berhasil ditambah', $gabah);
+            $produk->image = asset('/images/produk/' .$produk->image);
+
+            return apiResponse(201, 'success', 'Produk berhasil ditambah', $produk);
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
         }
@@ -89,7 +98,7 @@ class ProdukController extends Controller
 
             if($fileName)
             {
-                $pleaseRemove = base_path('public/images/produk').$fileName;
+                $pleaseRemove = base_path('public/images/produk/').$fileName;
 
                 if(file_exists($pleaseRemove)) {
                     unlink($pleaseRemove);
@@ -111,6 +120,7 @@ class ProdukController extends Controller
             ]);
 
             $produk = Produk::where('id', $id)->get();
+            $produk->image = asset('/images/toko/' .$produk->image);
 
             return apiResponse(202, 'success', 'Produk berhasil disunting', $produk);
         } catch (Exception $e) {
@@ -121,6 +131,14 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         try {
+
+            $fileName = Produk::where('id', $id)->first()->image;
+                $pleaseRemove = base_path('public/images/produk/').$fileName;
+
+            if(file_exists($pleaseRemove)) {
+                unlink($pleaseRemove);
+            }
+
             Produk::where('id', $id)->delete();
             return apiResponse(202, 'success', 'Produk berhasil dihapus');
         } catch (Exception $e) {

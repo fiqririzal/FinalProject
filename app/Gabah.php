@@ -15,7 +15,7 @@ class Gabah extends Model
 
     public function getPabrikNameAttribute()
     {
-        return Toko::where('id', $this->id_pabrik)->value('name');
+        return Pabrik::where('id', $this->id_pabrik)->value('name');
     }
 
     public function gabahToPabrik()
