@@ -11,12 +11,19 @@ class GabahController extends Controller
 {
     public function index()
     {
-        return apiResponse(200, 'success', 'Gabah semua data', Gabah::get());
+        $data = Gabah::get();
+        foreach($data as $datas)
+        {
+            $datas->image = asset('/images/gabah/' .$datas->image);
+        }
+        return apiResponse(200, 'success', 'Gabah semua data', $data);
     }
 
     public function show($id)
     {
-        return apiResponse(200, 'success', 'Gabah show data', Gabah::where('id', $id)->get());
+        $data = Gabah::where('id', $id)->first();
+        $data->image = asset('/images/gabah/' .$data->image);
+        return apiResponse(200, 'success', 'Gabah show data', $data);
     }
     
     public function store(Request $request){
@@ -53,6 +60,8 @@ class GabahController extends Controller
                 'image'     => $image,
             ]);
 
+            $gabah->image = asset('/images/gabah/' .$gabah->image);
+
             return apiResponse(201, 'success', 'Gabah berhasil ditambah', $gabah);
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
@@ -84,7 +93,7 @@ class GabahController extends Controller
 
             if($fileName)
             {
-                $pleaseRemove = base_path('public/images/gabah').$fileName;
+                $pleaseRemove = base_path('public/images/gabah/').$fileName;
 
                 if(file_exists($pleaseRemove)) {
                     unlink($pleaseRemove);
@@ -104,7 +113,8 @@ class GabahController extends Controller
                 'image'     => $image,
             ]);
 
-            $gabah = Gabah::where('id', $id)->get();
+            $gabah = Gabah::where('id', $id)->first();
+            $gabah->image = asset('/images/gabah/' .$gabah->image);
 
             return apiResponse(202, 'success', 'Gabah berhasil disunting', $gabah);
         } catch (Exception $e) {
@@ -115,6 +125,12 @@ class GabahController extends Controller
     public function destroy($id)
     {
         try {
+            $fileName = Gabah::where('id', $id)->first()->image;
+            $pleaseRemove = base_path('public/images/gabah/').$fileName;
+
+            if(file_exists($pleaseRemove)) {
+                unlink($pleaseRemove);
+            }
             Gabah::where('id', $id)->delete();
             return apiResponse(202, 'success', 'Gabah berhasil dihapus');
         } catch (Exception $e) {
