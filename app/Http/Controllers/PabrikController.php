@@ -10,12 +10,19 @@ class PabrikController extends Controller
 {
     public function index()
     {
-        return apiResponse(200, 'success', 'Pabrik semua data', Pabrik::get());
+        $data = Pabrik::get();
+        foreach($data as $datas)
+        {
+            $datas->image = asset('/images/pabrik/' .$datas->image);
+        }
+        return apiResponse(200, 'success', 'Pabrik semua data', $data);
     }
 
     public function show($id)
     {
-        return apiResponse(200, 'success', 'Pabrik show data', Pabrik::where('id', $id)->get());
+        $data = Pabrik::where('id', $id)->first();
+        $data->image = asset('/images/pabrik/' .$data->image);
+        return apiResponse(200, 'success', 'Pabrik show data', $data);
     }
     
     public function store(Request $request){
@@ -55,6 +62,8 @@ class PabrikController extends Controller
                 'status'   => $request->status,
             ]);
 
+            $pabrik->image = asset('/images/pabrik/' .$pabrik->image);
+
             return apiResponse(201, 'success', 'Pabrik berhasil ditambah', $pabrik);
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
@@ -88,7 +97,7 @@ class PabrikController extends Controller
 
             if($fileName)
             {
-                $pleaseRemove = base_path('public/images/pabrik').$fileName;
+                $pleaseRemove = base_path('public/images/pabrik/').$fileName;
 
                 if(file_exists($pleaseRemove)) {
                     unlink($pleaseRemove);
@@ -109,7 +118,8 @@ class PabrikController extends Controller
                 'status'   => $request->status,
             ]);
 
-            $pabrik = Pabrik::where('id', $id)->get();
+            $pabrik = Pabrik::where('id', $id)->first();
+            $pabrik->image = asset('/images/pabrik/' .$pabrik->image);
 
             return apiResponse(202, 'success', 'Pabrik berhasil disunting', $pabrik);
         } catch (Exception $e) {
@@ -120,6 +130,11 @@ class PabrikController extends Controller
     public function destroy($id)
     {
         try {
+            $fileName = Pabrik::where('id', $id)->first()->image;
+            $pleaseRemove = base_path('public/images/pabrik/').$fileName;
+            if(file_exists($pleaseRemove)) {
+                unlink($pleaseRemove);
+            }
             Pabrik::where('id', $id)->delete();
             return apiResponse(202, 'success', 'Pabrik berhasil dihapus');
         } catch (Exception $e) {
