@@ -130,6 +130,14 @@ class TokoController extends Controller
     public function destroy($id)
     {
         try {
+
+            $fileName = Toko::where('id', $id)->first()->image;
+            $pleaseRemove = base_path('public/images/toko/').$fileName;
+
+            if(file_exists($pleaseRemove)) {
+                unlink($pleaseRemove);
+            }
+
             Toko::where('id', $id)->delete();
             return apiResponse(202, 'success', 'Toko berhasil dihapus');
         } catch (Exception $e) {
