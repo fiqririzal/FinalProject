@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\UserDetail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,13 +14,15 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // $admin = User::create([
-        //     'name' => 'fiqri',
-        //     'email' => 'Fiqririzal@gmail.com',
-        //     'password' => Hash::make('admin'),
-        //     // 'phone' => '082319858335',
-        // ]);
-        // $admin->assignRole('Admin');
+        $id = User::create([
+            'name' => 'fiqri',
+            'email' => 'Fiqririzal@gmail.com',
+            'password' => Hash::make('admin'),
+        ])->assignRole('Admin')->userDetails()->create([
+            'address' => 'jalan babakan desa01/01',
+            'phone' => '081234567',
+        ]);
+
     }
 
 }

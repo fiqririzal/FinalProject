@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +18,7 @@ class ProdukController extends Controller
     {
         return apiResponse(200, 'success', 'Produk show data', Produk::where('id', $id)->get());
     }
-    
+
     public function store(Request $request){
 
         $rules = [

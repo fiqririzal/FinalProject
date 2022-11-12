@@ -17,7 +17,7 @@ class ArticleController extends Controller
         try{
             $extension = $request->file('image')->getClientOriginalExtension();
             $image = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
-            $destination = base_path('public/images/');
+            $destination = base_path('public/images/Register');
             $request->file('image')->move($destination,$image);
 
             DB::transaction(function ()use($request ,$image) {

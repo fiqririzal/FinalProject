@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Pabrik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +18,7 @@ class PabrikController extends Controller
     {
         return apiResponse(200, 'success', 'Pabrik show data', Pabrik::where('id', $id)->get());
     }
-    
+
     public function store(Request $request){
 
         $rules = [
