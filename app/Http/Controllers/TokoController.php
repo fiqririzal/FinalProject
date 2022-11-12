@@ -10,12 +10,19 @@ class TokoController extends Controller
 {
     public function index()
     {
-        return apiResponse(200, 'success', 'Toko semua data', Toko::get());
+        $data = Toko::get();
+        foreach($data as $datas)
+        {
+            $datas->image = asset('/images/toko/' .$datas->image);
+        }
+        return apiResponse(200, 'success', 'Toko semua data', $data);
     }
 
     public function show($id)
     {
-        return apiResponse(200, 'success', 'Toko show data', Toko::where('id', $id)->get());
+        $data = Toko::where('id', $id)->first();
+        $data->image = asset('/images/toko/' .$data->image);
+        return apiResponse(200, 'success', 'Toko show data', $data);
     }
     
     public function store(Request $request){
@@ -55,6 +62,8 @@ class TokoController extends Controller
                 'status'   => $request->status,
             ]);
 
+            $toko->image = asset('/images/toko/' .$toko->image);
+
             return apiResponse(201, 'success', 'Toko berhasil ditambah', $toko);
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
@@ -88,7 +97,7 @@ class TokoController extends Controller
 
             if($fileName)
             {
-                $pleaseRemove = base_path('public/images/toko').$fileName;
+                $pleaseRemove = base_path('public/images/toko/').$fileName;
 
                 if(file_exists($pleaseRemove)) {
                     unlink($pleaseRemove);
@@ -109,7 +118,8 @@ class TokoController extends Controller
                 'status'   => $request->status,
             ]);
 
-            $toko = Toko::where('id', $id)->get();
+            $toko = Toko::where('id', $id)->first();
+            $toko->image = asset('/images/toko/' .$toko->image);
 
             return apiResponse(202, 'success', 'Toko berhasil disunting', $toko);
         } catch (Exception $e) {
