@@ -12,6 +12,7 @@ class Article extends Model
         'id_category', 'title','slug','body','image',
     ];
     public function Category() {
-        return $this->belongsTo(Category::class, 'id');
+        return $this->belongsTo(Category::class, 'id_category','id');
     }
+
 }

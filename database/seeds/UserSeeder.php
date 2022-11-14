@@ -21,6 +21,8 @@ class UserSeeder extends Seeder
         ])->assignRole('Admin')->userDetails()->create([
             'address' => 'jalan babakan desa01/01',
             'phone' => '081234567',
+            'photo_profile'=>'',
+            'photo_id'=>'',
         ]);
 
     }

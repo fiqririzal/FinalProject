@@ -16,15 +16,14 @@ class CreateUserdetailTable extends Migration
     {
         Schema::create('userdetail', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('id_user');
             $table->string('address');
             $table->string('phone');
-            // $table->text('photo_profile');
-            // $table->text('photo_id');
-            // $table->enum('role',['1','2','3'])->comment('1=Admin 2=Pabrik 3=Toko');
+            $table->text('photo_profile');
+            $table->text('photo_id');
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('id_user')
                 ->references('id')
                 ->on('users')
                 ->onUpdate(DB::raw('NO ACTION'))

@@ -55,30 +55,38 @@ class AuthController extends Controller
             'password' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            // 'photo_profile' => 'required',
-            // 'photo_id' => 'required',
+            'photo_profile' => 'required',
+            'photo_id' => 'required',
             'role' => 'required',
         ]);
         try{
+            $extension = $request->file('photo_profile')->getClientOriginalExtension();
+            $photo_profile = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
+            $destination = base_path('public/images/profile');
+            $request->file('photo_profile')->move($destination,$photo_profile);
+
+            $extension = $request->file('photo_id')->getClientOriginalExtension();
+            $photo_id = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
+            $destination = base_path('public/images/photo_id');
+            $request->file('photo_id')->move($destination,$photo_id);
             if($request->role == '2') {
-                DB::transaction(function ()use($request ) {
                    $user = User::create([
                             'name'=>$request->name,
                             'email'=>$request->email,
                             'password'=>Hash::make($request->password),
                             'created_at'=>date('Y-m-d H-i-s')
                     ]);
+
                     // $user = User::create($data);
                     $user->syncRoles('Pabrik');
                     UserDetail::create([
-                        'user_id' => $user->id,
+                        'id_user' => $user->id,
                         'address' => $request->address,
                         'phone' => $request->phone,
-                        // 'photo_profile' => $request->photo_profile,
-                        // 'photo_id' => $request->photo_id,
+                        'photo_profile' => $photo_profile,
+                        'photo_id' => $photo_id,
                         'created_at' => date('Y-m-d H-i-s')
                     ]);
-                });
                 // dd('knol');
                 return apiResponse(201, 'success', 'user berhasil daftar');
             }else {
@@ -92,11 +100,11 @@ class AuthController extends Controller
                      // $user = User::create($data);
                      $user->syncRoles('Toko');
                      UserDetail::create([
-                         'user_id' => $user->id,
+                         'id_user' => $user->id,
                          'address' => $request->address,
                          'phone' => $request->phone,
-                         // 'photo_profile' => $request->photo_profile,
-                         // 'photo_id' => $request->photo_id,
+                         'photo_profile' => $request->photo_profile,
+                         'photo_id' => $request->photo_id,
                          'created_at' => date('Y-m-d H-i-s')
                      ]);
                  });

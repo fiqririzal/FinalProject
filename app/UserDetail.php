@@ -9,7 +9,7 @@ class UserDetail extends Model
     protected $table = "userdetail";
 
     protected $fillable =[
-    'user_id','address','phone','hobby','role'
+    'id_user','address','phone','hobby','role','photo_profile','photo_id'
     ];
 }
 // ,'photo_profile','photo_id',
