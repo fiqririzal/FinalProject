@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,10 +15,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AuthSeeder::class,
             UserSeeder::class,
-            PabrikSeeder::class,
-            TokoSeeder::class,
-            ProdukSeeder::class,
-            GabahSeeder::class,
+            CategorySeeder::class,
+            ArticleSeeder::class,
+            // PabrikSeeder::class,
+            // TokoSeeder::class,
+            // ProdukSeeder::class,
+            // GabahSeeder::class,
         ]);
     }
 }

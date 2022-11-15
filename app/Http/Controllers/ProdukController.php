@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,7 @@ class ProdukController extends Controller
         $data->image = asset('/images/produk/' .$data->image);
         return apiResponse(200, 'success', 'Produk show data', $data);
     }
-    
+
     public function store(Request $request){
 
         $rules = [

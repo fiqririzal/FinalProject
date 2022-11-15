@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserDetail extends Model
 {
+    protected $table = "userdetail";
+
     protected $fillable =[
-    'id_user','address','phone','hobby','photo_profile','photo_id','role'
+    'id_user','phone','hobby','role','photo_profile','photo_id'
     ];
 }
+// ,'photo_profile','photo_id',
+//

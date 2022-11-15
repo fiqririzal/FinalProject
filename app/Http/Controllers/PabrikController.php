@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Pabrik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,7 @@ class PabrikController extends Controller
         $data->image = asset('/images/pabrik/' .$data->image);
         return apiResponse(200, 'success', 'Pabrik show data', $data);
     }
-
+    
     public function showWith($id)
     {
         $data = Pabrik::where('id', $id)->with('pabrikToGabah')->first();

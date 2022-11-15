@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $rules = [
             'email' => 'required|email',
-            'password' => 'required|min:8',
+            'password' => 'required',
         ];
         $message = [
             'email.required' => 'Mohon Isikan Email anda',
@@ -43,40 +43,72 @@ class AuthController extends Controller
 
         $data   = [
             'token'     => $token,
-            'user'      => Auth::user()->detail,
+            'user'      => Auth::user(),
         ];
         return apiResponse(200, 'success', 'Selamat anda berhasil Login', $data);
     }
     public function signup(Request $request ){
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required',
-            'address' => 'required',
+            'password' => 'required|min:6',
             'phone' => 'required',
             'photo_profile' => 'required',
             'photo_id' => 'required',
             'role' => 'required',
         ]);
         try{
-            DB::transaction(function ()use($request) {
-                $id = User::insertGetId([
-                    'name'=>request('name'),
-                    'email'=>$request->email,
-                    'password'=>Hash::make($request->password),
-                    'created_at'=>date('Y-m-d H-i-s')
-                ]);
-                UserDetail::insert([
-                    'id_user' => $id,
-                    'adddress' => $request->adddress,
-                    'phone' => $request->phone,
-                    'photo_profile' => $request->photo_profile,
-                    'photo_id' => $request->photo_id,
-                    'role' => $request->role,
-                    'created_at' => date('Y-m-d H-i-s')
-                ]);
-            });
-            return apiResponse(201, 'success', 'user berhasil daftar');
+            $extension = $request->file('photo_profile')->getClientOriginalExtension();
+            $photo_profile = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
+            $destination = base_path('public/images/profile');
+            $request->file('photo_profile')->move($destination,$photo_profile);
+
+            $extension = $request->file('photo_id')->getClientOriginalExtension();
+            $photo_id = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
+            $destination = base_path('public/images/photo_id');
+            $request->file('photo_id')->move($destination,$photo_id);
+            if($request->role == '2') {
+                   $user = User::create([
+                            'name'=>$request->name,
+                            'email'=>$request->email,
+                            'password'=>Hash::make($request->password),
+                            'created_at'=>date('Y-m-d H-i-s')
+                    ]);
+
+                    // $user = User::create($data);
+                    // $format = '+62';
+                    // $phone = $format.$request->phone;
+                    $user->syncRoles('Pabrik');
+                    UserDetail::create([
+                        'id_user' => $user->id,
+                        'phone' =>'+62'.$request->phone,
+                        'photo_profile' => $photo_profile,
+                        'photo_id' => $photo_id,
+                        'created_at' => date('Y-m-d H-i-s')
+                    ]);
+                // dd('knol');
+                return apiResponse(201, 'success', 'user berhasil daftar');
+            }else {
+                DB::transaction(function ()use($request ) {
+                    $user = User::create([
+                             'name'=>$request->name,
+                             'email'=>$request->email,
+                             'password'=>Hash::make($request->password),
+                             'created_at'=>date('Y-m-d H-i-s')
+                     ]);
+                     // $user = User::create($data);
+                     $user->syncRoles('Toko');
+                     UserDetail::create([
+                         'id_user' => $user->id,
+                         'phone' => $request->phone,
+                         'photo_profile' => $request->photo_profile,
+                         'photo_id' => $request->photo_id,
+                         'created_at' => date('Y-m-d H-i-s')
+                     ]);
+                 });
+            }
+             return apiResponse(201, 'success', 'user berhasil daftar');
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
         }

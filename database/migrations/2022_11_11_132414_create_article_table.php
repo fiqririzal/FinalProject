@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateArticleTable extends Migration
 {
@@ -18,10 +19,16 @@ class CreateArticleTable extends Migration
             $table->unsignedBigInteger('id_category');
             $table->string('title');
             $table->string('slug');
-            $table->string('body');
+            $table->text('body');
             $table->text('image');
-            // $table->string('author');
+            $table->text('author');
             $table->timestamps();
+
+            $table->foreign('id_category')
+            ->references('id')
+            ->on('Category')
+            ->onUpdate(DB::raw('NO ACTION'))
+            ->onDelete(DB::raw('NO ACTION'));
         });
     }
 

@@ -2,6 +2,8 @@
 
 use App\Pabrik;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
 
 class PabrikSeeder extends Seeder
 {

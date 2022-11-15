@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    // protected $table = "user";
+
     use Notifiable, HasApiTokens, HasRoles;
 
     /**
@@ -40,5 +42,10 @@ class User extends Authenticatable
     ];
     public function user_detail() {
         return $this->belongsTo(UserDetail::class, 'id');
+    }
+
+    public function userDetails()
+    {
+        return $this->hasOne(UserDetail::class, 'id_user','id');
     }
 }

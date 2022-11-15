@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Toko;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,7 +34,7 @@ class TokoController extends Controller
         // dd($data);
         return apiResponse(200, 'success', 'Toko show data with produk', $data);
     }
-    
+
     public function store(Request $request){
 
         $rules = [
