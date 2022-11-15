@@ -25,7 +25,14 @@ class PabrikController extends Controller
         $data->image = asset('/images/pabrik/' .$data->image);
         return apiResponse(200, 'success', 'Pabrik show data', $data);
     }
-
+    
+    public function showWith($id)
+    {
+        $data = Pabrik::where('id', $id)->with('pabrikToGabah')->first();
+        $data->image = asset('/images/pabrik/' .$data->image);
+        return apiResponse(200, 'success', 'Pabrik show data', $data);
+    }
+    
     public function store(Request $request){
 
         $rules = [

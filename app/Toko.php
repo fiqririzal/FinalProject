@@ -18,6 +18,11 @@ class Toko extends Model
         return User::where('id', $this->id_user)->value('name');
     }
 
+    public function tokoToProduk()
+    {
+        return $this->hasMany(Produk::class, 'id_toko');
+    }
+
     public function tokoToUser()
     {
         return $this->belongsTo(User::class, 'id_user');
