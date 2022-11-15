@@ -17,10 +17,10 @@ class CreateUserdetailTable extends Migration
         Schema::create('userdetail', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_user');
-            $table->string('address');
             $table->string('phone');
             $table->text('photo_profile');
             $table->text('photo_id');
+            // $table->string('status');
             $table->timestamps();
 
             $table->foreign('id_user')

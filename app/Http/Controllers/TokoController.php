@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Toko;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,7 +25,7 @@ class TokoController extends Controller
         $data->image = asset('/images/toko/' .$data->image);
         return apiResponse(200, 'success', 'Toko show data', $data);
     }
-    
+
     public function store(Request $request){
 
         $rules = [

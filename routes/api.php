@@ -14,12 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-require_once('includes/category.php');
 Require_once('includes/auth.php');
-require_once('includes/article.php');
 
 Route::group( ['middleware' => 'auth:api'], function() {
-        Route::middleware('role:Pabrik|Admin')->group(function() {
+    Route::middleware('role:Pabrik|Admin')->group(function() {
         Require_once('includes/pabrik.php');
         Require_once('includes/gabah.php');
     });
@@ -29,6 +27,8 @@ Route::group( ['middleware' => 'auth:api'], function() {
 
     });
     Route::middleware('role:Admin')->group(function(){
+        require_once('includes/category.php');
+        require_once('includes/article.php');
     });
 }
 );

@@ -18,7 +18,7 @@ class CreateGabahTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('id_pabrik');
             $table->string('name');
-            $table->string('detail');
+            $table->text('detail');
             $table->decimal('price', 25,5);
             $table->text('image');
 

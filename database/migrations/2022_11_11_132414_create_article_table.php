@@ -19,9 +19,9 @@ class CreateArticleTable extends Migration
             $table->unsignedBigInteger('id_category');
             $table->string('title');
             $table->string('slug');
-            $table->string('body');
+            $table->text('body');
             $table->text('image');
-            // $table->string('author');
+            $table->text('author');
             $table->timestamps();
 
             $table->foreign('id_category')

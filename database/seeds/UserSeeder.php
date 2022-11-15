@@ -14,15 +14,57 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $id = User::create([
-            'name' => 'fiqri',
+        User::create([
+            'name' => 'Fiqri Rizal Zulmi',
             'email' => 'Fiqririzal@gmail.com',
             'password' => Hash::make('admin'),
         ])->assignRole('Admin')->userDetails()->create([
-            'address' => 'jalan babakan desa01/01',
             'phone' => '081234567',
             'photo_profile'=>'',
             'photo_id'=>'',
+            // 'status'=>'',
+        ]);
+
+        User::create([
+            'name' => 'Adri Ganteng',
+            'email' => 'dray@gmail.com',
+            'password' => Hash::make('admin'),
+        ])->assignRole('Admin')->userDetails()->create([
+            'phone' => '081234567',
+            'photo_profile'=>'',
+            'photo_id'=>'',
+            // 'status'=>'',
+        ]);
+        User::create([
+            'name' => 'M Asef',
+            'email' => 'asef@gmail.com',
+            'password' => Hash::make('admin'),
+        ])->assignRole('Admin')->userDetails()->create([
+            'phone' => '081234567',
+            'photo_profile'=>'',
+            'photo_id'=>'',
+            // 'status'=>'',
+        ]);
+        User::create([
+            'name' => 'Fadli Tampan Dan Berani',
+            'email' => 'fadli@gmail.com',
+            'password' => Hash::make('admin'),
+        ])->assignRole('Admin')->userDetails()->create([
+            'phone' => '081234567',
+            'photo_profile'=>'',
+            'photo_id'=>'',
+            // 'status'=>'',
+        ]);
+
+        User::create([
+            'name' => 'Wanda Soleh',
+            'email' => 'wanda@gmail.com',
+            'password' => Hash::make('admin'),
+        ])->assignRole('Admin')->userDetails()->create([
+            'phone' => '081234567',
+            'photo_profile'=>'',
+            'photo_id'=>'',
+            // 'status'=>'',
         ]);
 
     }

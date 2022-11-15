@@ -52,8 +52,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required',
-            'address' => 'required',
+            'password' => 'required|min:6',
             'phone' => 'required',
             'photo_profile' => 'required',
             'photo_id' => 'required',
@@ -78,11 +77,12 @@ class AuthController extends Controller
                     ]);
 
                     // $user = User::create($data);
+                    // $format = '+62';
+                    // $phone = $format.$request->phone;
                     $user->syncRoles('Pabrik');
                     UserDetail::create([
                         'id_user' => $user->id,
-                        'address' => $request->address,
-                        'phone' => $request->phone,
+                        'phone' =>'+62'.$request->phone,
                         'photo_profile' => $photo_profile,
                         'photo_id' => $photo_id,
                         'created_at' => date('Y-m-d H-i-s')
@@ -101,7 +101,6 @@ class AuthController extends Controller
                      $user->syncRoles('Toko');
                      UserDetail::create([
                          'id_user' => $user->id,
-                         'address' => $request->address,
                          'phone' => $request->phone,
                          'photo_profile' => $request->photo_profile,
                          'photo_id' => $request->photo_id,

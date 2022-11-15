@@ -18,7 +18,7 @@ class CreateProdukTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('id_toko');
             $table->string('name');
-            $table->string('detail');
+            $table->text('detail');
             $table->decimal('price', 25,5);
             $table->string('stok');
             $table->text('image');

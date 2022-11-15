@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
 use Exception;
 use App\Article;
+use App\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 // use Illuminate\Support\Facades\Redis;
 
@@ -36,31 +39,34 @@ class ArticleController extends Controller
             $destination = base_path('public/images/Article');
             $request->file('image')->move($destination,$image);
             // $image_path = $request->file('image')->store('image', 'public');
-
+            $author = Auth::user()->name;
                $article = Article::create([
                     'id_category'=>$request->category,
                     'title'=>$request->title,
                     'slug'=>Str::slug($request->title),
                     'body'=>$request->body,
                     'image' => $image,
+                    'author'=> $author,
                 ]);
                 $article->image = asset('/images/article/' .$article->image);
 
                 return apiResponse(201, 'success', 'berhasil menambah Artikel', $article);
         } catch(Exception $e) {
+            dd($e);
             return apiResponse(400, 'error', 'error', $e);
         }
     }
     //show all Article
     public function index(){
+
         $article = Article::all();
-
         foreach ($article as $articles){
-            $articles->image = asset('/images/Article/' .$articles->image);
-
+            $articles->image = $articles->image;
+            if(file_exists(public_path('/images/Article/'.$articles->image))) {
+                $articles->image = asset('/images/Article/' .$articles->image);
+            }
         }
         return apiResponse(200, 'success', 'List Article', $article);
-
     }
     //delete Article
     public function destroy($id){
@@ -128,6 +134,14 @@ class ArticleController extends Controller
                 }
                 return apiResponse(400, 'error', 'error', $e);
             }
+        }
+    }
+    public function show($id){
+        $article = Article::where($id)->first();
+        if ($article) {
+            return apiResponse(200, 'success', 'List Article Berdasar Kategori', $article);
+        } else {
+            return apiResponse(200, 'success', 'List Article Berdasar Kategori', $article);
         }
     }
 }
