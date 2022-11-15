@@ -20,10 +20,18 @@ class TokoController extends Controller
 
     public function show($id)
     {
-        $data = Toko::where('id', $id)->with('tokoToProduk')->first();
+        $data = Toko::where('id', $id)->first();
         $data->image = asset('/images/toko/' .$data->image);
         // dd($data);
         return apiResponse(200, 'success', 'Toko show data', $data);
+    }
+
+    public function showWith($id)
+    {
+        $data = Toko::where('id', $id)->with('tokoToProduk')->first();
+        $data->image = asset('/images/toko/' .$data->image);
+        // dd($data);
+        return apiResponse(200, 'success', 'Toko show data with produk', $data);
     }
     
     public function store(Request $request){

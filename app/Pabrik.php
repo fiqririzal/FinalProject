@@ -18,6 +18,11 @@ class Pabrik extends Model
         return User::where('id', $this->id_user)->value('name');
     }
 
+    public function pabrikToGabah()
+    {
+        return $this->hasMany(Gabah::class, 'id_pabrik');
+    }
+
     public function pabrikToUser()
     {
         return $this->belongsTo(User::class, 'id_user');
