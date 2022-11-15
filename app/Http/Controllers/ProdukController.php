@@ -118,8 +118,8 @@ class ProdukController extends Controller
                 'stok'    => $request->stok,
             ]);
 
-            $produk = Produk::where('id', $id)->get();
-            $produk->image = asset('/images/toko/' .$produk->image);
+            $produk = Produk::where('id', $id)->first();
+            $produk->image = asset('/images/produk/' .$produk->image);
 
             return apiResponse(202, 'success', 'Produk berhasil disunting', $produk);
         } catch (Exception $e) {
