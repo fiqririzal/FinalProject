@@ -58,16 +58,16 @@ class AuthController extends Controller
             'photo_id' => 'required',
             'role' => 'required',
         ]);
-        try{
-            $extension = $request->file('photo_profile')->getClientOriginalExtension();
-            $photo_profile = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
-            $destination = base_path('public/images/profile');
-            $request->file('photo_profile')->move($destination,$photo_profile);
+        $extension = $request->file('photo_profile')->getClientOriginalExtension();
+        $photo_profile = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
+        $destination = base_path('public/images/profile');
+        $request->file('photo_profile')->move($destination,$photo_profile);
 
-            $extension = $request->file('photo_id')->getClientOriginalExtension();
-            $photo_id = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
-            $destination = base_path('public/images/photo_id');
-            $request->file('photo_id')->move($destination,$photo_id);
+        $extension = $request->file('photo_id')->getClientOriginalExtension();
+        $photo_id = strtotime(date('Y-m-d H:i:s')).'.'.$extension;
+        $destination = base_path('public/images/photo_id');
+        $request->file('photo_id')->move($destination,$photo_id);
+        try{
             if($request->role == '2') {
                    $user = User::create([
                             'name'=>$request->name,
@@ -75,10 +75,6 @@ class AuthController extends Controller
                             'password'=>Hash::make($request->password),
                             'created_at'=>date('Y-m-d H-i-s')
                     ]);
-
-                    // $user = User::create($data);
-                    // $format = '+62';
-                    // $phone = $format.$request->phone;
                     $user->syncRoles('Pabrik');
                     UserDetail::create([
                         'id_user' => $user->id,
@@ -87,26 +83,22 @@ class AuthController extends Controller
                         'photo_id' => $photo_id,
                         'created_at' => date('Y-m-d H-i-s')
                     ]);
-                // dd('knol');
                 return apiResponse(201, 'success', 'user berhasil daftar');
             }else {
-                DB::transaction(function ()use($request ) {
                     $user = User::create([
                              'name'=>$request->name,
                              'email'=>$request->email,
                              'password'=>Hash::make($request->password),
                              'created_at'=>date('Y-m-d H-i-s')
                      ]);
-                     // $user = User::create($data);
                      $user->syncRoles('Toko');
                      UserDetail::create([
                          'id_user' => $user->id,
-                         'phone' => $request->phone,
-                         'photo_profile' => $request->photo_profile,
-                         'photo_id' => $request->photo_id,
+                         'phone' =>'+62'. $request->phone,
+                         'photo_profile' => $photo_profile,
+                         'photo_id' => $photo_id,
                          'created_at' => date('Y-m-d H-i-s')
                      ]);
-                 });
             }
              return apiResponse(201, 'success', 'user berhasil daftar');
         } catch(Exception $e) {

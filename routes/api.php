@@ -13,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Require_once('includes/auth.php');
+Route::get('/pabrik','PabrikController@index');
+Route::get('/gabah','GabahController@index');
+Route::get('/toko','TokoController@index');
+Route::get('/produk','ProdukController@index');
+Route::get('/category', 'CategoryController@index');
 
 Route::group( ['middleware' => 'auth:api'], function() {
     Route::middleware('role:Pabrik|Admin')->group(function() {
