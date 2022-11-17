@@ -8,12 +8,13 @@
 </p>
 
 ## How To Use
- 1.Git Clone
- 2.Run composer install
- 3.Run cp .env.example .env
- 4.Run php artisan key:generate
- 5.Run php artisan migrate
- 6.php artisan serve
+
+- Git Clone
+- Run composer install
+- Run cp .env.example .env
+- Run php artisan key:generate
+- Run php artisan migrate
+- php artisan serve
 
 
 ## About Laravel
