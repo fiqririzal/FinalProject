@@ -83,7 +83,7 @@ class AuthController extends Controller
                         'photo_id' => $photo_id,
                         'created_at' => date('Y-m-d H-i-s')
                     ]);
-                return apiResponse(201, 'success', 'user berhasil daftar');
+                return apiResponse(201, 'success', 'user berhasil daftar',null);
             }else {
                     $user = User::create([
                              'name'=>$request->name,
@@ -100,7 +100,7 @@ class AuthController extends Controller
                          'created_at' => date('Y-m-d H-i-s')
                      ]);
             }
-             return apiResponse(201, 'success', 'user berhasil daftar');
+             return apiResponse(201, 'success', 'user berhasil daftar',null);
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Article;
 use App\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -14,15 +15,12 @@ class CategoryController extends Controller
     //create a new category
     public function store(Request $request){
         try{
-            DB::transaction(function ()use($request) {
                 Category::insertGetId([
                     'name'=>$request->name,
                     'detail'=>$request->detail,
                     'slug'=>Str::slug($request->name),
                     'created_at'=>date('Y-m-d H-i-s')
                 ]);
-
-            });
             return apiResponse(201, 'success', 'berhasil menambah data');
         } catch(Exception $e) {
             return apiResponse(400, 'error', 'error', $e);
@@ -76,6 +74,14 @@ class CategoryController extends Controller
             return apiResponse(202, 'success', 'data berhasil dihapus');
         } catch (Exception $e) {
             return apiResponse(400, 'gagal', 'error', $e);
+        }
+    }
+    public function show($id){
+        $article = Article::where('id_category',$id)->get();
+        if ($article) {
+            return apiResponse(200, 'success', 'Artikel by ID', $article);
+        } else {
+            return apiResponse(200, 'success', 'List Article Berdasar Kategori', $article);
         }
     }
 }

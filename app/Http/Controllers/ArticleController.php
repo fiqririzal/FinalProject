@@ -17,7 +17,6 @@ class ArticleController extends Controller
 {
     //Create a new Article
     public function store(Request $request){
-
         $rules = [
             'category' => 'required',
             'title' => 'required',
@@ -58,7 +57,6 @@ class ArticleController extends Controller
     }
     //show all Article
     public function index(){
-
         $article = Article::all();
         foreach ($article as $articles){
             $articles->image = $articles->image;
@@ -136,10 +134,11 @@ class ArticleController extends Controller
             }
         }
     }
+    //Show article by id
     public function show($id){
-        $article = Article::where($id)->first();
+        $article = Article::where('id',$id)->first();
         if ($article) {
-            return apiResponse(200, 'success', 'List Article Berdasar Kategori', $article);
+            return apiResponse(200, 'success', 'Artikel by ID', $article);
         } else {
             return apiResponse(200, 'success', 'List Article Berdasar Kategori', $article);
         }
