@@ -13,16 +13,27 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+// show all pabrik
 Route::get('/pabrik','PabrikController@index');
+
+Route::get('/produk/{id}','ProdukController@show');
+// show all gabah
 Route::get('/gabah','GabahController@index');
+// show gabah berdasar id
+Route::get('/gabah/{id}','GabahController@show');
+//show all toko
 Route::get('/toko','TokoController@index');
+//show all produk
 Route::get('/produk','ProdukController@index');
+//show all category
 Route::get('/category', 'CategoryController@index');
-//article by id
+//article by id category
 Route::get('/category/{id}', 'CategoryController@show');
+//show all article
 Route::get('/article','ArticleController@index');
+//article berdasar id
 Route::get('/article/{id}','ArticleController@show');
+
 
 Require_once('includes/auth.php');
 
